@@ -1,4 +1,4 @@
-![Logo](karte.png)
+![Logo](map.png)
 Dieses Scipt ist zum anzeigen der Saugkarte vom Rockrobo 1 und 2.
 
 ## Installation
@@ -7,7 +7,7 @@ Dieses Scipt ist zum anzeigen der Saugkarte vom Rockrobo 1 und 2.
 ```
 sudo apt install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev 
 ```
-Bei anderen Systemen Schaue [HIER](https://github.com/Automattic/node-canvas/wiki/_pages):
+Bei anderen Systemen Schaue [HIER](https://github.com/Automattic/node-canvas/wiki/_pages)
 3. Füge folgende NPM Pakete in der Javascript Instanz hinzu: "canvas" und "xmlhttprequest"
 
 4. Installiere [Valetudo](https://github.com/Hypfer/Valetudo) auf deinem [gerooteten](https://github.com/dgiese/dustcloud/wiki/VacuumRobots-manual-update-root-Howto) Sauger 
