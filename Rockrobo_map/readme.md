@@ -1,5 +1,6 @@
-![Logo](map.png)
 Dieses Scipt ist zum anzeigen der Saugkarte vom Rockrobo 1 und 2.
+
+![Logo](map.png)
 
 ## Installation
 1. kopiere den Inhalt der "map.js" in ein neues script in deinem Javascript Adapter (noch nicht starten)
