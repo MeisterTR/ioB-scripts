@@ -2,7 +2,13 @@ Dieses Scipt ist zum anzeigen der Saugkarte vom Rockrobo 1 und 2.
 
 ![Logo](map.png)
 
+
+
+
+## UPDATE 11.12.2018:
+Canvas hat ein update auf die version 2.x.x bekommen. Hier funktioniert die map.js nicht mehr, statdessen muss die new_canvas2.js verwendet werden
 ## Installation
+
 1. kopiere den Inhalt der "map.js" in ein neues script in deinem Javascript Adapter (noch nicht starten)
 2. führe in der Konsole folgenen Befehl aus (Ubuntu und Debian): 
 ```
