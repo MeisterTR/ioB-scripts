@@ -26,7 +26,7 @@ const robotState = "mihome-vacuum.0.info.state" // e.g : "mihome-vacuum.0.info.s
 
 httpGetAsync("http://" + robotIp + "/api/map/latest", updateMapPage);
 
- 
+
 // get actuel map data from Valetudo
 function httpGetAsync(theUrl, callback) {
     var xmlHttp = new XMLHttpRequest();
@@ -53,62 +53,60 @@ function updateMapPage(res) {
 
     let mapImageData;
     var map;
-    canvas.height = 1024//res.image.dimensions.height;
-    canvas.width = 1024 //res.image.dimensions.width;
+    canvas.height = 1024*4
+    canvas.width = 1024*4
 
-    //ctx.fillStyle = "grey";
-    //ctx.fillRect(0,0, 1024, 1024);
     ctx.fillStyle = "#47679b";
     res.image.pixels.floor.forEach(function (coord) {
-        ctx.fillRect(coord[0] + res.image.position.left, coord[1] +res.image.position.top, 1, 1);
+        ctx.fillRect(coord[0]*4 + res.image.position.left*4 , coord[1]*4  +res.image.position.top*4 , 4, 4);
 
     });
     ctx.fillStyle = "#8ab2f7";
     res.image.pixels.obstacle_strong.forEach(function (coord) {
-        ctx.fillRect(coord[0] + res.image.position.left, coord[1] +res.image.position.top, 1, 1);
+        ctx.fillRect(coord[0]*4  + res.image.position.left*4 , coord[1]*4 +res.image.position.top*4 , 4, 4);
 
-    }); 
+    });
     ctx.fillStyle = "white";
     let first = true;
     let cold1, cold2;
+    
 
     // Male den Pfad
     res.path.points.forEach(function (coord) {
-        ctx.fillRect(coord[0]/50, coord[1]/50, 1, 1);
         if (first) {
-            ctx.fillRect(coord[0]/50, coord[1]/50, 1, 1);
-            cold1 = coord[0]/50;
-            cold2 = coord[1]/50;
+            ctx.fillRect(coord[0]/12.5, coord[1]/50, 2, 2);
+            cold1 = coord[0]/12.5;
+            cold2 = coord[1]/12.5;
         }
         else {
             ctx.beginPath();
             ctx.lineWidth = 1;
             ctx.strokeStyle = "#FFFFFF";
             ctx.moveTo(cold1, cold2);
-            ctx.lineTo(coord[0]/50, coord[1]/50);
+            ctx.lineTo(coord[0]/12.5, coord[1]/12.5);
             ctx.stroke();
 
-            cold1 = coord[0]/50
-            cold2 = coord[1]/50
+            cold1 = coord[0]/12.5
+            cold2 = coord[1]/12.5
         }
         first = false
 
     });
-    // Zeichne Roboter
 
+    // Zeichne Roboter und Ladestation
     ctx.beginPath();
     canvasimg = rotateRobo(img, res.path.current_angle);
-    ctx.drawImage(canvasimg, res.robot[0]/50 - 15, res.robot[1]/50 - 15, img.width, img.height);
+    ctx.drawImage(canvasimg, res.robot[0]/12.5 - 15, res.robot[1]/12.5 - 15, img.width, img.height);
     ctx.beginPath();
-    ctx.drawImage(img_charger, res.charger[0]/50 - 15, res.charger[1]/50 - 15);
+    ctx.drawImage(img_charger, res.charger[0]/12.5 - 15, res.charger[1]/12.5 - 15);
 
     // crop image
     let canvas_final = createCanvas();
     let ctx_final = canvas_final.getContext('2d');
-    var trimmed = ctx.getImageData(res.image.position.left, res.image.position.top,res.image.dimensions.width, res.image.dimensions.height);
+    var trimmed = ctx.getImageData(res.image.position.left*4, res.image.position.top*4,res.image.dimensions.width*4, res.image.dimensions.height*4);
 
-    canvas_final.height = res.image.dimensions.height;
-    canvas_final.width = res.image.dimensions.width;
+    canvas_final.height = res.image.dimensions.height*4;
+    canvas_final.width = res.image.dimensions.width*4;
     
     ctx_final.putImageData(trimmed,0,0);
 
@@ -134,5 +132,5 @@ function rotateRobo(img, angle) {
 schedule("*/2 * * * * *", function () {
     var robyState = getState(robotState).val;
 
-    if (robyState === 5 || robyState === 11) httpGetAsync("http://" + robotIp + "/api/map/latest", updateMapPage);
+    if (robyState === 5 || robyState === 11 || robyState === 17) httpGetAsync("http://" + robotIp + "/api/map/latest", updateMapPage);
 });
