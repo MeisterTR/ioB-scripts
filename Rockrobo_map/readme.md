@@ -3,8 +3,8 @@ Dieses Scipt ist zum anzeigen der Saugkarte vom Rockrobo 1 und 2.
 ![Logo](map.png)
 
 
-
-
+## UPDATE 15.05.2019:
+ab Valetudo 3.X muss die V3_X.js genommen werden,da sich das Kartenformat geändert hat.
 ## UPDATE 11.12.2018:
 Canvas hat ein update auf die version 2.x.x bekommen. Hier funktioniert die map.js nicht mehr, statdessen muss die new_canvas2.js verwendet werden
 ## Installation
