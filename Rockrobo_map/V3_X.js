@@ -117,7 +117,7 @@ function updateMapPage(res) {
     }
     // Zeichne Roboter
     ctx.beginPath();
-    if (res.path.current_angle) {
+    if (res.path.current_angle && typeof res.robot[0] !== "undefined" && typeof res.robot[1] !== "undefined") {
         canvasimg = rotateRobo(img, res.path.current_angle);
         ctx.drawImage(canvasimg, res.robot[0] / 12.5 - 15, res.robot[1] / 12.5 - 15, img.width, img.height);
     } else {
@@ -144,7 +144,7 @@ function updateMapPage(res) {
 
     map = canvas_final.toDataURL();
     setState("javascript.0.vis.RockroboMap", '<img src="' + canvas_final.toDataURL() + '" /style="width: auto ;height: 100%;">');
-    log('<img src="' + canvas_final.toDataURL() + '" />');
+    //log('<img src="' + canvas_final.toDataURL() + '" />');
 }
 
 function rotateRobo(img, angle) {
