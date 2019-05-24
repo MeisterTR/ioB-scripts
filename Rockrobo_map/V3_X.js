@@ -117,18 +117,22 @@ function updateMapPage(res) {
     }
     // Zeichne Roboter
     ctx.beginPath();
-    if (res.path.current_angle && typeof res.robot[0] !== "undefined" && typeof res.robot[1] !== "undefined") {
-        canvasimg = rotateRobo(img, res.path.current_angle);
-        ctx.drawImage(canvasimg, res.robot[0] / 12.5 - 15, res.robot[1] / 12.5 - 15, img.width, img.height);
-    } else {
-        ctx.drawImage(img, res.robot[0] / 12.5 - 15, res.robot[1] / 12.5 - 15, img.width, img.height);
+    if (res.robot){
+        if (res.path.current_angle && typeof res.robot[0] !== "undefined" && typeof res.robot[1] !== "undefined") {
+            canvasimg = rotateRobo(img, res.path.current_angle);
+            ctx.drawImage(canvasimg, res.robot[0] / 12.5 - 15, res.robot[1] / 12.5 - 15, img.width, img.height);
+        } else {
+            ctx.drawImage(img, res.robot[0] / 12.5 - 15, res.robot[1] / 12.5 - 15, img.width, img.height);
+        }
     }
     // Zeichne Ladestation wenn vorhanden
-
-    if (typeof res.charger[0] !== "undefined" && typeof res.charger[1] !== "undefined") {
-        ctx.beginPath();
-        ctx.drawImage(img_charger, res.charger[0] / 12.5 - 15, res.charger[1] / 12.5 - 15);
+    if (res.charger){
+        if (typeof res.charger[0] !== "undefined" && typeof res.charger[1] !== "undefined") {
+            ctx.beginPath();
+            ctx.drawImage(img_charger, res.charger[0] / 12.5 - 15, res.charger[1] / 12.5 - 15);
+        }
     }
+  
 
 
     // crop image
