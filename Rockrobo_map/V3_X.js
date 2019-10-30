@@ -125,7 +125,7 @@ function updateMapPage(res) {
     }
     // Zeichne Roboter
     ctx.beginPath();
-    if (res.robot){
+    if (res.robot) {
         if (res.path.current_angle && typeof res.robot[0] !== "undefined" && typeof res.robot[1] !== "undefined") {
             canvasimg = rotateRobo(img, res.path.current_angle);
             ctx.drawImage(canvasimg, res.robot[0] / 12.5 - 15, res.robot[1] / 12.5 - 15, img.width, img.height);
@@ -134,13 +134,13 @@ function updateMapPage(res) {
         }
     }
     // Zeichne Ladestation wenn vorhanden
-    if (res.charger){
+    if (res.charger) {
         if (typeof res.charger[0] !== "undefined" && typeof res.charger[1] !== "undefined") {
             ctx.beginPath();
             ctx.drawImage(img_charger, res.charger[0] / 12.5 - 15, res.charger[1] / 12.5 - 15);
         }
     }
-  
+
 
 
     // crop image
@@ -155,20 +155,24 @@ function updateMapPage(res) {
 
 
     map = canvas_final.toDataURL();
-    last_map=  canvas_final;
+    last_map = canvas_final;
     setState("javascript.0.vis.RockroboMap", '<img src="' + canvas_final.toDataURL() + '" /style="width: auto ;height: 100%;">');
     //log('<img src="' + canvas_final.toDataURL() + '" />');
 }
-function send(canvas, text){
-var buf = canvas.toBuffer();
-fs.writeFile("/opt/iobroker/vac_map.png", buf, (err) => {
-  if (err) throw err;
-  log('The file has been saved!');
-});
-setTimeout(function(){
-   // sendTo('telegram.0', '/opt/iobroker/vac_map.png');
-    sendTo('telegram.0', {text: '/opt/iobroker/vac_map.png', caption: text});
- }, 3000);
+
+function send(canvas, text) {
+    var buf = canvas.toBuffer();
+    fs.writeFile("/opt/iobroker/vac_map.png", buf, (err) => {
+        if (err) throw err;
+        log('The file has been saved!');
+    });
+    setTimeout(function () {
+        // sendTo('telegram.0', '/opt/iobroker/vac_map.png');
+        sendTo('telegram.0', {
+            text: '/opt/iobroker/vac_map.png',
+            caption: text
+        });
+    }, 3000);
 
 }
 
@@ -190,14 +194,16 @@ schedule("*/2 * * * * *", function () {
     if (robyState === 5 || robyState === 11 || robyState === 17) httpGetAsync("http://" + robotIp + "/api/map/latest", updateMapPage);
 });
 
-subscribe({ id: 'mihome-vacuum.0.info.state'/*Vacuum state*/, change: "ne" }, function (obj) {
-if(SENDTELEGRAM){
-    if(obj.newState.val === 8 && obj.oldState.val !== 8){
-        send(last_map, FINISHTEXT);
+subscribe({
+    id: 'mihome-vacuum.0.info.state' /*Vacuum state*/ ,
+    change: "ne"
+}, function (obj) {
+    if (SENDTELEGRAM) {
+        if (obj.newState.val === 8 && obj.oldState.val !== 8) {
+            send(last_map, FINISHTEXT);
+        } else if ((obj.oldState.val === 5 || obj.oldState.val === 11 || obj.oldState.val === 17) && obj.newState.val !== 6) {
+            send(last_map, ERRORTEXT);
+        }
     }
-    else if((obj.oldState.val === 5 || obj.oldState.val === 11 || obj.oldState.val === 17) && obj.newState.val !== 6) {
-        send(last_map, ERRORTEXT);
-    }
-}
 
 });
